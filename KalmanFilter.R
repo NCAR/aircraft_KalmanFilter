@@ -38,8 +38,8 @@
 
 print (sprintf ('Kalman Processor is starting -- %s', Sys.time()))
 thisFileName <- "KalmanFilter"
-require(Ranadu, quietly = TRUE, warn.conflicts=FALSE)
-require(numDeriv, quietly = TRUE, warn.conflicts=FALSE)    ## needed for the jacobian() function
+library(Ranadu, quietly = TRUE, warn.conflicts=FALSE)
+library(numDeriv, quietly = TRUE, warn.conflicts=FALSE)    ## needed for the jacobian() function
 # library(signal)      ## used for filtering -- but ::signal avoids error message
 library(reshape2)    ## used with ggplot facet plots
 library(grid)
