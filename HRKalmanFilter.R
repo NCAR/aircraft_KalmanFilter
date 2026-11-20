@@ -175,6 +175,7 @@ copy_attributes <- function (atv, v, nfile) {
     if (grepl ('units', aname)) {next}
     if (grepl ('Dependencies', aname)) {next}
     if (grepl ('actual_range', aname)) {next}
+    if (aname == '_FillValue') {next}  # already set by ncvar_def(missval=); type must match
     if (is.numeric (atv[[i]])) {
       ncatt_put (nfile, v, attname=aname, attval=as.numeric(atv[[i]]))
     } else {
