@@ -44,6 +44,8 @@ library(numDeriv, quietly = TRUE, warn.conflicts=FALSE)    ## needed for the jac
 library(reshape2)    ## used with ggplot facet plots
 library(grid)
 options(stringsAsFactors=FALSE)
+source('chunks/getPlatform.R')  ## reads "Platform" or "platform_identifier"
+
 ## See if this is being run as user "shiny":
 SHINY <- ifelse(Sys.info()['user'] == 'shiny', TRUE, FALSE)
 
@@ -460,11 +462,11 @@ for (flight in Fl) {
     
     
     ## ----radome, include = TRUE--------------------------------------------------------
-    Platform <- ifelse (grepl('130', attr(D1, 'Platform')), "C130", "GV")
+    Platform <- ifelse (grepl('130', getPlatform(fname1)), "C130", "GV")
     cffn <- 19.70547
     cff <- 21.481
     cfs <- c(4.525341674, 19.933222011, -0.001960992)
-    if (grepl('130', attr(D1, 'Platform'))) { # C-130 WECAN values
+    if (Platform == "C130") { # C-130 WECAN values
       cff <- 10.3123
       cfs <- c(5.6885, 14.0452, -0.00461)
     }
@@ -484,7 +486,7 @@ for (flight in Fl) {
     D25$AKKF <- cff * D25$QRF + cfs[1] + cfs[2] * D25$QRS + cfs[3] * D25$QCFS
     D25$AKKF[D25$QCF < 10] <- NA
     D25$SSKF <- 0.008 + 22.301 * D25$BDIFR / D25$QCF
-    if (grepl('130', attr(D25, 'Platform'))) { # C-130 WECAN values; use with heading offset +0.76
+    if (grepl('130', getPlatform(fname25))) { # C-130 WECAN values; use with heading offset +0.76
       D25$SSKF <- 0.85 + 12.6582 * D25$BDIFR / D25$QCF
     }
     D25$SSKF[D25$QCF < 10] <- NA
@@ -651,6 +653,7 @@ for (flight in Fl) {
     
     ## adjust GPS velocity components for GPS antenna location
     FI_KF <- DataFileInfo (fname, LLrange=FALSE)
+    FI_KF$Platform <- getPlatform(fname)  ## also used in chunks/AdjustCal.R
     LG <- ifelse (grepl('130', FI_KF$Platform), -9.88, -4.30)
     MaxGap <- 1000
     .span <- 25    
@@ -697,6 +700,7 @@ for (flight in Fl) {
       D1[is.na(D1[, V]), V] <- 0
     }
     D1 <- transferAttributes(DSave, D1)
+    attr(D1, 'Platform') <- FI_KF$Platform  ## used in chunks/Kalman-setup.R
     
     ## transform to the a-frame for comparison to the IRU:
     VL <- matrix(c(D1$VEW, D1$VNS, D1$VSPD), ncol=3) 
