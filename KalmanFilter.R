@@ -851,11 +851,11 @@ for (flight in Fl) {
       de <- data.frame (reshape2::melt(d2, 1, c(2,4,3,5), factorsAsStrings=TRUE), VarGroup, PanelGroup)
       g7 <- ggplot(dd, aes(x=Time)) + facet_grid(PanelGroup ~ .) 
       g7 <- g7 + geom_ribbon(aes(x=Time, ymin=value, ymax=value), data=de, alpha=0.25)  ##alpha=.25 
-      g7 <- g7 + geom_path(aes(x=Time, y=value, colour=VarGroup, linetype=VarGroup, size=VarGroup), data=dd)
+      g7 <- g7 + geom_path(aes(x=Time, y=value, colour=VarGroup, linetype=VarGroup, linewidth=VarGroup), data=dd)
       g7 <- g7 + ylim(-0.05,0.05)
       g7 <- g7 + scale_linetype_manual ('', labels=lvl, breaks=lvl, values = c(1,1))
       g7 <- g7 + scale_colour_manual('', labels = lvl, breaks=lvl, values = c('blue', 'red'))
-      g7 <- g7 + scale_size_manual('', labels=lvl, breaks=lvl, values = c(0.5, 1.5))
+      g7 <- g7 + scale_linewidth_manual('', labels=lvl, breaks=lvl, values = c(0.5, 1.5))
       g7 <- g7 + theme_WAC(1) + theme (legend.position=c(0.5,0.95))
       g7 <- g7 + theme(axis.text.x = element_text (size=11.5, margin=margin(15,0,0,0)))
       g7 <- g7 + theme(axis.title.x = element_text (size=12))

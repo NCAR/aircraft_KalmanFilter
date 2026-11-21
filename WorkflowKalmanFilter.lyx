@@ -3284,7 +3284,7 @@ Add
 \begin_inset Quotes eld
 \end_inset
 
-geom_line(aes(size=VarGroup))
+geom_line(aes(linewidth=VarGroup))
 \begin_inset Quotes erd
 \end_inset
 

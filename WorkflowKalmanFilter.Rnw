@@ -822,7 +822,7 @@ as the id.var, and include the two new groups in the data.frame definition.
 each panel, with replication as needed. Each panel must be the same. 
 \item Construct the initial plot definition using ggplot, using x=Time,
 y=value, colour=VarGroup, linetype=VarGroup in the aesthetic specification. 
-\item Add ``geom\_line(aes(size=VarGroup))'' to this definition to plot
+\item Add ``geom\_line(aes(linewidth=VarGroup))'' to this definition to plot
 the lines.
 \item Use appropriate manual scale definitions to set the desired colors,
 line types, and line widths in order to get consistent plot lines

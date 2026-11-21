@@ -24466,7 +24466,7 @@ g7 <- g7 + geom_ribbon(aes(x=Time, ymin=value, ymax=value), data=de, alpha=0.25)
 \begin_layout Plain Layout
 
 g7 <- g7 + geom_path(aes(x=Time, y=value, colour=VarGroup, linetype=VarGroup,
- size=VarGroup), data=dd)
+ linewidth=VarGroup), data=dd)
 \end_layout
 
 \begin_layout Plain Layout
@@ -24487,7 +24487,7 @@ g7 <- g7 + scale_colour_manual('', labels = lvl, breaks=lvl, values = c('blue',
 
 \begin_layout Plain Layout
 
-g7 <- g7 + scale_size_manual('', labels=lvl, breaks=lvl, values = c(0.5,
+g7 <- g7 + scale_linewidth_manual('', labels=lvl, breaks=lvl, values = c(0.5,
  1.5))
 \end_layout
 
