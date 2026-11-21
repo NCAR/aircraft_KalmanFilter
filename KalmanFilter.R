@@ -46,6 +46,23 @@ library(grid)
 options(stringsAsFactors=FALSE)
 source('chunks/getPlatform.R')  ## reads "Platform" or "platform_identifier"
 
+## Data location: use $DAT if it names an existing directory; otherwise
+## Ranadu's DataDirectory() falls back to $DATA_DIR, then /scr/raf_data/, etc.
+## $DAT may be /scr/raf/local_productiondata if running as nimbus or include the
+## project (/scr/raf_data/TI3GER-2) if not running as nimbus; the project part
+## is removed because this script and Ranadu's setFileName() both append
+## Project/ themselves.
+useDAT <- function(Project) {
+  dat <- sub('/+$', '', Sys.getenv('DAT'))
+  if (!nzchar(dat)) return(invisible(NULL))
+  if (!dir.exists(dat)) {
+    print(sprintf('DAT=%s is not an existing directory; ignoring it', dat))
+    return(invisible(NULL))
+  }
+  if (basename(dat) == Project) dat <- dirname(dat)
+  Sys.setenv(DATA_DIR = dat)
+}
+
 ## See if this is being run as user "shiny":
 SHINY <- ifelse(Sys.info()['user'] == 'shiny', TRUE, FALSE)
 
@@ -116,6 +133,10 @@ if (!interactive()) {  ## can run interactively or via Rscript; this is for Rscr
       Project <- run.args[1]
       ProjectDir <- Project
     }
+    useDAT(Project)
+    Directory <- DataDirectory ()
+    KFDirectory <- ifelse(SHINY, 'KFoutput', Directory)
+    print(sprintf('Data directory: %s', Directory))
   } else {
     print ("Usage: Rscript KalmanFilter.R Project Flight UpdateAKRD[y/N] UpdateSSRD[y,N] Simple[y/N] Interval[10]")
     print ("Example: Rscript KalmanFilter.R CSET rf01 y y n 15")
